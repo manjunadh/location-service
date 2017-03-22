@@ -1,0 +1,72 @@
+buildscript {
+	ext {
+		springBootVersion = '1.5.2.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+
+		// for the odbc jars
+		maven {
+			url "${artifactory_contextUrl}/thirdparty"
+			credentials {
+				username = "${artifactory_readonly_user}"
+				password = "${artifactory_readonly_password}"
+			}
+		}
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'groovy'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+repositories {
+
+    maven {
+        url "${artifactory_contextUrl}/thirdparty"
+        credentials {
+            username = "${artifactory_readonly_user}"
+            password = "${artifactory_readonly_password}"
+        }
+    }
+
+
+	mavenCentral()
+
+
+
+
+}
+
+
+dependencies {
+	compile('org.springframework.boot:spring-boot-starter-jdbc')
+	compile('org.springframework.boot:spring-boot-starter-web')
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+
+
+    compile(group: 'ojdbc', name: 'ojdbc', version: '7')
+
+    compile "io.springfox:springfox-swagger2:2.6.1"
+    compile "io.springfox:springfox-swagger-ui:2.6.1"
+
+	// for lucene searching
+	compile group: 'org.apache.lucene', name: 'lucene-core', version: '4.10.4'
+	compile group: 'org.apache.lucene', name: 'lucene-spatial', version: '4.10.4'
+	compile group: 'org.apache.lucene', name: 'lucene-queries', version: '4.10.4'
+	// https://mvnrepository.com/artifact/org.apache.lucene/lucene-spatial-extras
+	//compile group: 'org.apache.lucene', name: 'lucene-spatial-extras', version: '4.10.4'
+
+	// https://mvnrepository.com/artifact/org.apache.lucene/lucene-analyzers
+	compile group: 'org.apache.lucene', name: 'lucene-analyzers-common', version: '4.10.4'
+
+
+
+}
